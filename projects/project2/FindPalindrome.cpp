@@ -96,7 +96,6 @@ bool FindPalindrome::add(const vector<string> & stringVector)
 vector< vector<string> > FindPalindrome::toVector() const
 {
 	// TODO need to implement this...
-	vector<vector<string>> returnThingie;
-	return returnThingie;
+	return vector< vector<string> >();
 }
 
