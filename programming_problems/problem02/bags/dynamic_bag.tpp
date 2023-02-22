@@ -5,7 +5,7 @@ DynamicBag<T>::DynamicBag() {}
   
 
 template<typename T>
-DynamicBag<T>::DynamicBag(const DynamicBag& x){}
+DynamicBag<T>::DynamicBag(const DynamicBag<T>& x){}
     
 template<typename T>
 DynamicBag<T>::~DynamicBag(){}
