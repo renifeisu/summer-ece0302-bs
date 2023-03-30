@@ -105,6 +105,8 @@ Temporary Items
 !.vscode/launch.json
 !.vscode/extensions.json
 *.code-workspace
+**/build/*
+!**/build/*.zip
 
 # Local History for Visual Studio Code
 .history/
