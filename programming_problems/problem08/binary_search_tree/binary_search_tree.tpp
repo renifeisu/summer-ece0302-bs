@@ -143,7 +143,7 @@ bool BinarySearchTree<KeyType, ItemType>::remove(KeyType key)
 
     // case, item to delete has two children
 
-    return false; // default should never get here
+    return false; 
 }
 
 template <typename KeyType, typename ItemType>
