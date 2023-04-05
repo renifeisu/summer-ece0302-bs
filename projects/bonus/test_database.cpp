@@ -9,7 +9,12 @@ struct Entry {
     std::string title;
     std::string author;
     int pubYear;
+    bool operator==(const Entry&) const; 
 };
+
+bool Entry::operator==(const Entry& e) const {
+    return (title == e.title) && (author == e.author) && (pubYear == e.pubYear);
+}
 
 
 TEST_CASE("Test Construction", "[construction]") {
