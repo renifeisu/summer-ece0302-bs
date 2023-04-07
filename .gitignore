@@ -105,6 +105,7 @@ Temporary Items
 !.vscode/launch.json
 !.vscode/extensions.json
 *.code-workspace
+**/build/
 **/build/*
 !**/build/*.zip
 
