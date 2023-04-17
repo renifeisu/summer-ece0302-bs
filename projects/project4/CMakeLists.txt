@@ -33,13 +33,14 @@ TARGET_LINK_LIBRARIES(pathfinder image)
 
 # some simple tests
 enable_testing()
-add_test(test-queue test-queue)
-add_test(test00 pathfinder ${CMAKE_SOURCE_DIR}/tests/maze00.png output00.png)
-add_test(test00-compare compare ${CMAKE_SOURCE_DIR}/tests/output00.png output00.png)
-add_test(test01 pathfinder ${CMAKE_SOURCE_DIR}/tests/maze01.png output01.png)
-add_test(test01-compare compare ${CMAKE_SOURCE_DIR}/tests/output01.png output01.png)
-add_test(test02 pathfinder ${CMAKE_SOURCE_DIR}/tests/maze02.png output02.png)
-add_test(test02-compare compare ${CMAKE_SOURCE_DIR}/tests/output02.png output02.png)
+add_test(NAME test-queue COMMAND test-queue)
+add_test(NAME test00 COMMAND pathfinder ${CMAKE_SOURCE_DIR}/tests/maze00.png output00.png)
+add_test(NAME test00-compare COMMAND compare ${CMAKE_SOURCE_DIR}/tests/output00.png output00.png)
+add_test(NAME test01 COMMAND pathfinder ${CMAKE_SOURCE_DIR}/tests/maze01.png output01.png)
+add_test(NAME test01-compare COMMAND compare ${CMAKE_SOURCE_DIR}/tests/output01.png output01.png)
+add_test(NAME test02 COMMAND pathfinder ${CMAKE_SOURCE_DIR}/tests/maze02.png output02.png)
+add_test(NAME test02-compare COMMAND compare ${CMAKE_SOURCE_DIR}/tests/output02.png output02.png)
+set_tests_properties(test00 test00-compare test01 test01-compare test02 test02-compare PROPERTIES RUN_SERIAL TRUE)
 
 add_custom_target(submission COMMAND
   ${CMAKE_COMMAND} -E tar "cfv" "${CMAKE_CURRENT_BINARY_DIR}/p4_pathfinder.zip" --format=zip
