@@ -8,6 +8,7 @@
 #include "frontier_queue.hpp"
 
 // specialize the std::hash function for Puzzles
+// reference here: https://en.cppreference.com/w/cpp/language/extending_std
 namespace std {
 template <> struct hash<Puzzle> {
   typedef Puzzle argument_type;
@@ -55,12 +56,12 @@ std::pair<bool, std::size_t> PuzzleSolver::search() {
       std::tie(ok, result) = value.apply(static_cast<Puzzle::Action>(a));
 
       if (ok) {
-        //TODO: define inexplored as whether the result is in explored
-        bool inexplored = false;
-        bool infrontier = frontier.contains(result);
-        if (!(inexplored || infrontier)) {
+        //TODO: define in_explored as whether the result is in explored
+        bool in_explored = false;
+        bool in_frontier = frontier.contains(result);
+        if (!(in_explored || in_frontier)) {
           frontier.push(result, cost + 1, result.heuristic(goal));
-        } else if (infrontier) {
+        } else if (in_frontier) {
           frontier.replaceif(result, cost + 1);
         }
       }
