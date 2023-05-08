@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(SOURCE test_priority_queue.cpp 
-abstract_list.hpp list.hpp list.tpp 
+abstract_list.hpp list.hpp list.tpp Node.hpp Node.tpp
 abstract_sorted_list.hpp sorted_list.hpp sorted_list.tpp 
 abstract_priority_queue.hpp priority_queue.hpp priority_queue.tpp)
 
