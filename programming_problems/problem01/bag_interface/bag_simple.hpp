@@ -3,7 +3,8 @@
 
 #include "abstract_bag.hpp"
 
-template<typename T> class Bag{
+template<typename T> 
+class Bag: public AbstractBag<T> {
 public:
 
   Bag();
