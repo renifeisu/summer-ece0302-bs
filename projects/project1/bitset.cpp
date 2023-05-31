@@ -20,6 +20,7 @@ Bitset::Bitset(intmax_t size) {
     if(size < 1)
     {
         valid = false;
+        bitset = new intmax_t[10];  
     }
     else
     {
