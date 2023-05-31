@@ -45,7 +45,10 @@ public:
 
 private:
 
-  // TODO
+  T *items; // array of bag items
+
+  std::size_t itemCount; // number of items in the bag
+  
 };
 
 #include "dynamic_bag.tpp"
