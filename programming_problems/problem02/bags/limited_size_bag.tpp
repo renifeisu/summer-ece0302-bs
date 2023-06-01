@@ -36,6 +36,10 @@ bool LimitedSizeBag<T>::remove(const T& item)
     return true;
   }
 
+  else if(item == 0) // cannot add 0
+  {
+    return false;
+  }
   else
   {
     itemCount--; // decrements the number of items by one
