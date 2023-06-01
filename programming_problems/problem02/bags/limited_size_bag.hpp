@@ -36,7 +36,9 @@ public:
 
 private:
 
-  // TODO
+  T *items = NULL; // array of bag items
+
+  std::size_t itemCount; // number of items in bag
 };
 
 #include "limited_size_bag.tpp"
