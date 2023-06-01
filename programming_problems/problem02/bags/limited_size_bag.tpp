@@ -4,7 +4,6 @@ template<typename T>
 LimitedSizeBag<T>::LimitedSizeBag() 
 {
   itemCount = 0; // bag is initially empty
-  items = nullptr; 
 }
   
 template<typename T>
@@ -16,21 +15,8 @@ bool LimitedSizeBag<T>::add(const T& item)
   }
   else
   {
-    itemCount ++; // increment size of bag
-    T *newItems = new T[itemCount]; // temporary item array
-    for(std::size_t i = 0; i < itemCount - 1; i++) // copies original array values into new one
-    {
-      newItems[i] = items[i];
-    }
-    newItems[itemCount - 1] = item; // appends an item to new array
-
-    delete []items; // deallocate old array
-
-    items = new T[itemCount]; // make old array same size as new array
-    for(std::size_t i = 0; i < itemCount; i++) // copies new array values into old one
-    {
-      items[i] = newItems[i];
-    }
+    itemCount ++; // increment number of items
+    items[itemCount] = item; // stores item into bag
 
     return true;
   }
@@ -52,8 +38,10 @@ bool LimitedSizeBag<T>::remove(const T& item)
 
   else
   {
-    std::size_t index; // identifies the position of the item in bag
-    for(std::size_t i = 0; i < itemCount; i++) // for loop to find the index
+    itemCount--; // decrements the number of items by one
+
+    std::size_t index; // finds the location of item
+    for(std::size_t i = 0; i < maxsize; i++)
     {
       if(items[i] == item)
       {
@@ -61,42 +49,11 @@ bool LimitedSizeBag<T>::remove(const T& item)
         break;
       }
     }
-    
-    itemCount--; // decrements the size of the bag
 
-    if(index == itemCount) // if the item is at the end of the bag array, no shifting is needed
+    // shifting other items in the bag to remove an item
+    for(std::size_t i = index; i < maxsize - 1; i++)
     {
-      T *newItems = new T[itemCount]; // temporary bag array
-      for(std::size_t i = 0; i < itemCount; i++) // temp bag array copies original bag array
-      {
-        newItems[i] = items[i];
-      }
-
-      delete []items; // deallocates memory of original bag array
-      items = new T[itemCount]; // resizing original bag array
-      for(std::size_t i = 0; i < itemCount; i++) // origianl bag array copies temp bag array
-      {
-        items[i] = newItems[i];
-      }
-    }
-    else // shifting needed
-    {
-      T *newItems = new T[itemCount]; // temporary bag array
-      for(std::size_t i = 0; i < index; i++) // temp bag array copies original bag array
-      {
-        newItems[i] = items[i];
-      }
-      for(std::size_t i = index; i < itemCount; i++) 
-      {
-        newItems[i] = items[i + 1];
-      }
-
-      delete []items; // deallocates memory of original bag array
-      items = new T[itemCount]; // resizing original bag array
-      for(std::size_t i = 0; i < itemCount; i++) // origianl bag array copies temp bag array
-      {
-        items[i] = newItems[i];
-      }
+      items[i] = items[i + 1];
     }
 
     return true;
@@ -106,7 +63,7 @@ bool LimitedSizeBag<T>::remove(const T& item)
 template<typename T>
 bool LimitedSizeBag<T>::isEmpty() const
 {
-  if(itemCount < 1) // size of bag has to be zero to be empty
+  if(itemCount < 1) // number of items in the bag has to be zero to be empty
   {
     return true;
   }
@@ -119,20 +76,20 @@ bool LimitedSizeBag<T>::isEmpty() const
 template<typename T>
 std::size_t LimitedSizeBag<T>::getCurrentSize() const
 {
-  return itemCount; // return size of bag
+  return itemCount; // returns number of items in the bag
 }
 
 template<typename T>
 bool LimitedSizeBag<T>::contains(const T& item) const
 {  
-  if(isEmpty()) // bag must have size > 0 to contain an item
+  if(isEmpty()) // bag must have item count > 0 to contain an item
   {
     return false;
   }
 
   std::size_t check = 0; // checks to see if item is in bag
 
-  for(std::size_t i = 0; i < itemCount; i++)
+  for(std::size_t i = 0; i < maxsize; i++)
   {
     if(items[i] == item)
     {
@@ -153,9 +110,13 @@ bool LimitedSizeBag<T>::contains(const T& item) const
 template<typename T>
 void LimitedSizeBag<T>::clear()
 {
-  delete []items; // deallocates memory of bag
-  itemCount == 0; // sets size of bag to be zero
-  items = nullptr; // empty array
+  // resets all values in the array
+  for(std::size_t i = 0; i < maxsize; i++)
+  {
+    items[i] = 0;
+  }
+
+  itemCount = 0;
 }
 
 template<typename T>
@@ -163,7 +124,7 @@ std::size_t LimitedSizeBag<T>::getFrequencyOf(const T & item) const
 {
   std::size_t count = 0; // initializes frequency to be zero
 
-  for(std::size_t i = 0; i < itemCount; i++)
+  for(std::size_t i = 0; i < maxsize; i++)
   {
     if(items[i] == item)
     {

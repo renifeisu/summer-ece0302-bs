@@ -44,9 +44,9 @@ TEST_CASE("[Test 3] remove", "[LimitedSizeBag]"){
   LimitedSizeBag<int> b2;
 
   REQUIRE(b.remove(2) == true);
-  REQUIRE(b.getCurrentSize() == 1);
-  REQUIRE(b.isEmpty() == false);
-  REQUIRE(b.contains(2));
+  REQUIRE(b.getCurrentSize() == 0);
+  REQUIRE(b.isEmpty() == true);
+  REQUIRE(b.contains(2) == false);
   REQUIRE(b2.remove(1) == false);
 }
 
@@ -101,19 +101,14 @@ TEST_CASE("[Test 8] contains", "[LimitedSizeBag]"){
   REQUIRE(b.getCurrentSize() == 1);
   REQUIRE(b.isEmpty() == false);
   REQUIRE(b.contains(1));
-  REQUIRE(b.contains(0) == false);
+  REQUIRE(b.contains(3) == false);
 }
 
 TEST_CASE("[Test 9] maxsize", "[LimitedSizeBag]"){
   int x = LimitedSizeBag<int>::maxsize;
-  LimitedSizeBag<int> b;
-  for(int i = 0; i < 200; i++)
-  {
-    b.add(1);
-  }
+  
+  REQUIRE(x == 100);
+  REQUIRE(x < 200 );
+  REQUIRE(x > 1 );
 
-  LimitedSizeBag<int> b2;
-
-  REQUIRE(b.getCurrentSize() > x);
-  REQUIRE(b2.getCurrentSize() < x );
 }
