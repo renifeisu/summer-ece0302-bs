@@ -8,7 +8,9 @@ class FindPalindrome{
 
 private:
 	// private stuff that you define and implement goes here...
-	
+	std::vector<std::string> *stringList; // pointer to vector containing all strings
+	std::vector<std::string> *palindromeVector; // pointer vector containing all sentence palindromes
+	int palindromeCount; // current number of sentence palindromes
 	// ...
 	
 	// private stuff that you are given or is specified in the project
