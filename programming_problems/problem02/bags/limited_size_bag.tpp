@@ -14,11 +14,6 @@ bool LimitedSizeBag<T>::add(const T& item)
     return false;
   }
 
-  else if(item == 0) // cannot add 0
-  {
-    return false;
-  }
-
   else
   {
     itemCount++; // increment number of items
