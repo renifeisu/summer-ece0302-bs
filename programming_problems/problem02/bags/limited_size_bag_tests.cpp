@@ -112,3 +112,15 @@ TEST_CASE("[Test 9] maxsize", "[LimitedSizeBag]"){
   REQUIRE(x > 1 );
 
 }
+
+TEST_CASE("[Test 10] size limit", "[LimitedSizeBag]")
+{
+  LimitedSizeBag<int> b;
+  for(int i = 0; i < b.maxsize; i++)
+  {
+    b.add(1);
+  }
+  
+  REQUIRE(b.getCurrentSize() == 100);
+
+}

@@ -8,12 +8,12 @@ LimitedSizeBag<T>::LimitedSizeBag()
   
 template<typename T>
 bool LimitedSizeBag<T>::add(const T& item)
-{
+{ 
   if(itemCount >= maxsize) // bag cannot go over size limit
   {
     return false;
   }
-  
+
   else if(item == 0) // cannot add 0
   {
     return false;
@@ -21,8 +21,8 @@ bool LimitedSizeBag<T>::add(const T& item)
 
   else
   {
-    itemCount ++; // increment number of items
-    items[itemCount] = item; // stores item into bag
+    itemCount++; // increment number of items
+    items[itemCount - 1] = item; // stores item into bag
 
     return true;
   }

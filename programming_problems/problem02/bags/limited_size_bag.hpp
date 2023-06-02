@@ -36,7 +36,7 @@ public:
 
 private:
 
-  T items[maxsize]; // array of bag items
+  T items[maxsize] = {0}; // array of bag items
 
   std::size_t itemCount; // number of items in bag
 };
