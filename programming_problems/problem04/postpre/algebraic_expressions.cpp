@@ -7,6 +7,8 @@ using std::string;
 
 #include "algebraic_expressions.hpp"
 
+#include <stack>
+
 bool isoperator(char ch) {
   return ((ch == '+') || (ch == '-') || (ch == '/') || (ch == '*'));
 }
@@ -43,6 +45,30 @@ bool isPost(string s) {
 
 void convert(string &postfix, string &prefix) {
 
-  // TODO
+  if(!isPost(postfix)) // postfix must be a valid postfix expression
+  {
+    return;
+  }
+  else
+  {
+    std::stack<string> stack; // stack to push operands into
+    for(int i = 0; i < postfix.size(); i++)
+    {
+      if(!isoperator(postfix[i])) // push operands into stack
+      {
+        stack.push(string(1, postfix[i]));
+      }
+      else // detect operator
+      {
+        string s1 = stack.top(); // pop second operand
+        stack.pop(); 
+        string s2 = stack.top(); // pop first operand
+        stack.pop();
+        prefix = string(1, postfix[i]) + s2 + s1; // temp prefix expression (inverse of postfix expression)
+        stack.push(prefix); // temp prefix expression is pushed back into stack (to be nested in other prefix expressions)
+      }
+    }
+    prefix = stack.top(); // after the for loop, only the final prefix expression should be at the top of the stack
+  }
   
 }

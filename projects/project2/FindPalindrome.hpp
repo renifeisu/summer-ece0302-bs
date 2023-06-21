@@ -11,6 +11,7 @@ private:
 	std::vector<std::string> stringList; // vector containing all strings
 	std::vector<std::vector<std::string>> palindromeVector; // vector containing all palindromeVectors of the stringList
 	int palindromeCount; // current number of sentence palindromes
+
 	// ...
 	
 	// private stuff that you are given or is specified in the project

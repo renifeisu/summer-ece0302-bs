@@ -24,54 +24,61 @@ static void convertToLowerCase(string & value)
 void FindPalindrome::recursiveFindPalindromes(vector<string>
         candidateStringVector, vector<string> currentStringVector)
 {
-	std::vector<std::string> str; // concatenated vector of strings
-	str.resize(candidateStringVector.size() + currentStringVector.size());
-	std::fill(str.begin(), str.end(), 0);
-	for(int i = 0; i < candidateStringVector.size(); i++)
+	if((stringList.size() < 1) || (cutTest1(stringList) == false) || (cutTest2(candidateStringVector, stringList) == false)) // invalid palindrome check
 	{
-		str.at(i) = candidateStringVector.at(i);
-	}
-	for(int i = candidateStringVector.size(); i < str.size(); i++)
+		return; 
+	} // END IF
+	else if(stringList.size() == 1) // one word to check
 	{
-		str.at(i) = currentStringVector.at(i - candidateStringVector.size());
-	}
-
-	// run cut tests
-	if ((cutTest1(str) == false) || cutTest2(candidateStringVector, currentStringVector))
-	{
-		// do nothing
-	}
-	
-	// check if palindrome
-	else
-	{
-		// make a concatenated string of the vector
-		std::string fullStr = "";
-		for(int i = 0; i < str.size(); i++)
-		{
-			fullStr += str.at(i);
-		}
-
 		// check if the string is a palindrome
-		if(isPalindrome(fullStr))
+		if(isPalindrome(stringList.at(0)))
 		{
-			palindromeVector.push_back(str);
+			palindromeVector.push_back(stringList); // add palindrome to vector
+			palindromeCount++; // increment palindrome count
 		}
-	}
-
-	if(currentStringVector.size() == 0) // end of recursion
-	{
 		return;
-	}
-
-	else // continue recursion
+	} // END ELSE IF word check
+	else // sentence to check
 	{
-		std::string addString = currentStringVector.at(0); // copies first element of current string vector into a string variable
-		candidateStringVector.push_back(addString); // adds that string variable into the candidate string vector
-		currentStringVector.erase(currentStringVector.begin()); // deletes first element of current string vector
-		recursiveFindPalindromes(candidateStringVector, currentStringVector);
-	}
-}
+		/** Temporary string vector, to not modify current string vector*/
+		std::vector<std::string> recursiveTempStringVector; // holds temporary values of current string vector
+		for(int i = 0; i < currentStringVector.size(); i++) // copies current string vector into temp string vector
+		{
+			recursiveTempStringVector.push_back(currentStringVector.at(i));
+		}
+
+		/** Recursion to fill the candidate string vector and make temp string vector empty*/
+		if(recursiveTempStringVector.size() > 0)
+		{
+			for(int i = 0; i < recursiveTempStringVector.size(); i++)
+			{
+				std::vector<std::string> tempV1, tempV2;
+				tempV1 = recursiveTempStringVector;
+				tempV2 = candidateStringVector;
+				candidateStringVector.push_back(recursiveTempStringVector.at(i)); // Copies first element in string list into empty list
+				recursiveTempStringVector.erase(recursiveTempStringVector.begin() + i); // Erases first element in string list
+				recursiveFindPalindromes(candidateStringVector, recursiveTempStringVector); // Recursion to empty string list
+				recursiveTempStringVector = tempV1;
+				candidateStringVector = tempV2;
+			}
+		}
+
+		/** Checking to see if candidate vector is palindrome*/
+		else
+		{
+			std::string recursiveString = ""; // empty string
+			for(int k = 0; k < candidateStringVector.size(); k++)
+			{
+				recursiveString += candidateStringVector.at(k); // string will be concatenated words
+			} 
+			if(isPalindrome(recursiveString))
+			{
+				palindromeVector.push_back(candidateStringVector); // add palindrome to vector
+				palindromeCount++; // increment palindrome count
+			}
+		} // end check permutations
+	} // END ELSE sentence check
+} // end method
 
 // private function to determine if a string is a palindrome (given, you
 // may change this if you want)
@@ -118,6 +125,7 @@ void FindPalindrome::clear()
 bool FindPalindrome::cutTest1(const vector<string> & stringVector)
 {
 	std::vector<int> count; // stores frequency of letters in string
+	std::string alphabet = "abcdefghijklmnopqrstuvwxyz"; // alphabet string
 
 	/*******************************************************************/
 	/** Combining all strings in the string vector into a single string*/
@@ -158,24 +166,28 @@ bool FindPalindrome::cutTest1(const vector<string> & stringVector)
 	/** int check*/
 	/**************************************************************************/
 
-	int check = 0; // checking frequencies
+	std::vector<int> oddFrequencies; // checking odd frequencies to account for double counting
 	for(int i = 0; i < fullStr.size(); i++) // loop to check the frequencies stored in the count vector
 	{
 		int a = count.at(i) % 2; // check if any of the frequencies are odd
 		if(a == 1)
 		{
-			check++; // increments check by one for each odd frequency
+			oddFrequencies.push_back(i);
 		}
 	}
-
-	if(check > 1) // failed cut test 1
+	
+	for(int i = 0; i < oddFrequencies.size(); i++)
 	{
-		return false;
+		for(int j = 0; j < oddFrequencies.size(); j++)
+		{
+			if(fullStr[oddFrequencies.at(i)] != fullStr[oddFrequencies.at(j)])
+			{
+				return false; // failed cut test 1
+			}
+		}
 	}
-	else // passed cut test 1
-	{
-		return true;
-	}
+	
+	return true; // cut test 1 passed
 }
 
 bool FindPalindrome::cutTest2(const vector<string> & stringVector1,
@@ -188,6 +200,7 @@ bool FindPalindrome::cutTest2(const vector<string> & stringVector1,
 
 	std::string str1 = "", str2 = ""; // concatenated string of string vectors
 	std::string str; // represents a string in a string vector
+	std::string alphabet = "abcdefghijklmnopqrstuvwxyz"; // alphabet string
 	int sizeCompare; // finds which string vector is longer
 
 	for(int i = 0; i < stringVector1.size(); i++) // looping through stringVector1, concatenating each string to one big one
@@ -348,16 +361,20 @@ bool FindPalindrome::add(const string & value)
 	int check = 0; // need to check if any of the strings in current string list match the string being added
 	std::string str1, str2 = value;
 	convertToLowerCase(str2);
-	for(int i = 0; i < stringList.size(); i++)
+	if(stringList.size() > 0)
 	{
-		str1 = stringList.at(i);
-		convertToLowerCase(str1);
-		if(str1 == str2)
+		for(int i = 0; i < stringList.size(); i++)
 		{
-			check =  1;
+			str1 = stringList.at(i);
+			convertToLowerCase(str1);
+			if(str1 == str2)
+			{
+				check =  1;
+			}
 		}
 	}
-	if(check = 1)
+	
+	if(check == 1)
 	{
 		return false;
 	}
@@ -377,7 +394,9 @@ bool FindPalindrome::add(const string & value)
 }
 
 bool FindPalindrome::add(const vector<string> & stringVector)
-{
+{	
+	int c = 0; // keeps track of how many words get added given the vector
+
 	for(int a = 0; a < stringVector.size(); a++) // check each string in the string vector
 	{
 		/**************************************************************************/
@@ -402,7 +421,7 @@ bool FindPalindrome::add(const vector<string> & stringVector)
 		}
 		if(count != value.size()) // number of letters has to match size of string
 		{
-			return false;
+			// do nothing
 		}
 
 		/**************************************************************************/
@@ -411,40 +430,56 @@ bool FindPalindrome::add(const vector<string> & stringVector)
 		/**************************************************************************/
 		
 		// exception; added string must be unique
-		int check = 0; // need to check if any of the strings in current string list match the string being added
-		std::string str1, str2 = value;
-		convertToLowerCase(str2);
-		for(int i = 0; i < stringList.size(); i++)
+		else
 		{
-			str1 = stringList.at(i);
-			convertToLowerCase(str1);
-			if(str1 == str2)
+			int check = 0; // need to check if any of the strings in current string list match the string being added
+
+			std::string str1, str2 = value;
+			convertToLowerCase(str2);
+			if(stringList.size() > 0)
 			{
-				check =  1;
+				for(int i = 0; i < stringList.size(); i++)
+				{
+					str1 = stringList.at(i);
+					convertToLowerCase(str1);
+					if(str1 == str2)
+					{
+						check =  1;
+					}
+				}
 			}
-		}
-		if(check = 1)
-		{
-			return false;
-		}
-	}
+
+			if(check == 1)
+			{
+				// do nothing
+			}
 
 	/**************************************************************************/
 	/** Adds string values to stringList and recomputes palindromes*/
 	/**************************************************************************/
-	for(int i = 0; i < stringVector.size(); i++) // appends all the strings to the string list
+			else
+			{
+				std::string value = stringVector.at(a); // represents a string the string vector
+				stringList.push_back(value); // appends a string to the end of the string vector
+
+				palindromeVector.clear(); // empties palindrome vector
+				recursiveFindPalindromes(std::vector<std::string>(), stringList); // finds sentence palindromes from the string list
+				palindromeCount = palindromeVector.size(); // recomputes the number of sentence palindromes found through recursion
+
+				c++;
+			} // end ELSE checked string uniqueness
+		} // end ELSE checked string validity
+	} // end looping words in vector
+
+	if(c == stringVector.size())
 	{
-		std::string value = stringVector.at(i); // represents a string the string vector
-		stringList.push_back(value); // appends a string to the end of the string vector
+		return true; // have to add at least 1 word to return true
 	}
-
-	palindromeVector.clear(); // empties palindrome vector
-	recursiveFindPalindromes(std::vector<std::string>(), stringList); // finds sentence palindromes from the string list
-	palindromeCount = palindromeVector.size(); // recomputes the number of sentence palindromes found through recursion
-
-	return true;
-
-}
+	else
+	{
+		return false;
+	}
+} // end method
 
 vector< vector<string> > FindPalindrome::toVector() const
 {

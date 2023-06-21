@@ -45,9 +45,8 @@ public:
   void setEntry(std::size_t position, const T& newValue);
 
 private:
-
-  // TODO
-  
+  T *array;
+  std::size_t length;
 };
 
 #include "array_list.tpp"

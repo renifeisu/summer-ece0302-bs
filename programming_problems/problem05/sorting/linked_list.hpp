@@ -21,7 +21,6 @@ public:
   // copy assignment
   LinkedList& operator=(LinkedList x);
 
-  // swap
   void swap(LinkedList& x);
   
   // determine if a list is empty
@@ -29,6 +28,8 @@ public:
 
   // return current length of the list
   std::size_t getLength() const noexcept;
+
+
 
   // insert item at position in the list
   bool insert(std::size_t position, const T& item);
@@ -47,8 +48,10 @@ public:
 
 private:
 
-  //TODO
-  
+  Node<T> *headPtr; // pointer to first node
+
+  std::size_t size; // size of list
+    
 };
 
 #include "linked_list.tpp"
