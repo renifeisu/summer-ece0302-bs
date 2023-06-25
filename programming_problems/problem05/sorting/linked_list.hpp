@@ -29,8 +29,6 @@ public:
   // return current length of the list
   std::size_t getLength() const noexcept;
 
-
-
   // insert item at position in the list
   bool insert(std::size_t position, const T& item);
 
