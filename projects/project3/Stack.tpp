@@ -50,6 +50,7 @@ bool Stack<ItemType>::push(const ItemType& newItem)
 {
 	Node<ItemType> *tempPtr = new Node<ItemType>(newItem, headPtr); // tempPtr points to newItem, and next pointer is headPtr
 	headPtr = tempPtr; // tempPtr becomes the new headPtr
+	currentSize++;
 	return true;
 }  // end push
 
@@ -64,7 +65,7 @@ ItemType Stack<ItemType>::peek() const
 	}
 	else
 	{
-		returnItem = ItemType(); // Default item
+		throw std::logic_error("Empty stack");
 	}
 	return returnItem;
 }  // end peek
@@ -81,6 +82,7 @@ bool Stack<ItemType>::pop()
 		tempPtr->setNext(nullptr); // unlinks node from top of the stack
 		delete tempPtr; // deletes node that tempPtr is pointing to
 		tempPtr = nullptr;
+		currentSize--;
 
 		return true;
 	}
@@ -97,7 +99,6 @@ void Stack<ItemType>::clear()
 	while(!isEmpty())
 	{
 		pop(); // keep removing first item until no items in stack
-		currentSize--; // decrements item counter
 	}
 }  // end clear
 

@@ -25,10 +25,14 @@ private:
 	/** Bag to store the XML element names. Uses the book's Bag implementation. */
 	Bag<std::string>* elementNameBag;
 	/** Stack to store XML tag names while parsing. Uses your stack implementation. */
-	Stack<std::string>* parseStack;
+	Stack<StringTokenType>* parseStack;
 	/** Vector to store the tokenized input string and the token types */
 	std::vector<TokenStruct> tokenizedInputVector;
-  
+
+	// bool variables for storing tokenizing and parsing bool vals
+	bool t_check;
+	bool p_check;
+	
   // You can add or change the private fields.
 
 public:

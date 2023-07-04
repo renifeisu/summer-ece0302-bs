@@ -53,6 +53,9 @@ public:
 private:
 
   // TODO
+  Node<T> *headPtr; // pointer to first node
+
+  std::size_t size; // size of list
 
 };
 

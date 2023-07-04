@@ -199,3 +199,27 @@ TEST_CASE( "Test XMLParser Final Handout-0", "[XMLParser]" )
 		REQUIRE(myXMLParser.containsElementName("color_swatch"));
 		REQUIRE(myXMLParser.frequencyElementName("color_swatch") == 15);
 }
+
+TEST_CASE( "autograder", "[XMLParser]" )
+{
+	// Create an instance of XMLParse
+	XMLParser myXMLParser;
+	REQUIRE( myXMLParser.tokenizeInputString("<?xml-script version=\"1.0\"?><test>text</test>"));
+    REQUIRE( myXMLParser.parseTokenizedInput());
+	REQUIRE( !myXMLParser.tokenizeInputString("< /tag>") );
+	REQUIRE( !myXMLParser.tokenizeInputString("\n</tag unicode=\"uint8\"/>") );
+	REQUIRE( !myXMLParser.tokenizeInputString(" ") );
+	REQUIRE( !myXMLParser.tokenizeInputString(" \n <") );
+	REQUIRE( !myXMLParser.tokenizeInputString(" \n <>") );
+	REQUIRE( myXMLParser.tokenizeInputString(" some t?ex/.t ") );
+	REQUIRE( myXMLParser.parseTokenizedInput());
+}
+
+TEST_CASE( "test", "[XMLParser]" )
+{
+	// Create an instance of XMLParse
+	XMLParser myXMLParser;
+	bool y = myXMLParser.tokenizeInputString("<\?xml version=\"1.0\" \?> <html> <head> Content by itself within an element. </head> <body> This is content within an element. <div> This is content as well. <div> Content. </div> Hey look it's content. </div> </body> Content here also. </html>");
+	bool z = myXMLParser.tokenizeInputString(" ");
+	REQUIRE( myXMLParser.parseTokenizedInput());
+}
